@@ -303,6 +303,28 @@ body{font-family:'Noto Sans KR',sans-serif;color:var(--white);display:flex;justi
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--ink4);border-radius:3px;}
 
+/* ── RESULT PRODUCT: spec grid & meters ── */
+.res-specs{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--ink4);
+  border-radius:10px;overflow:hidden;
+  margin-bottom:12px;
+}
+.res-spec{
+  background:var(--ink3);padding:9px 10px;text-align:center;
+}
+.res-spec-val{font-size:13px;font-weight:800;color:var(--white);display:block;line-height:1.3;}
+.res-spec-key{font-size:10px;color:var(--mist);letter-spacing:.4px;margin-top:2px;display:block;}
+.res-meters{margin-bottom:13px;}
+.res-meter{
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:7px;
+}
+.res-meter-lbl{font-size:11px;font-weight:700;color:var(--mist);width:36px;flex-shrink:0;}
+.res-meter-track{flex:1;height:5px;background:var(--ink4);border-radius:3px;overflow:hidden;}
+.res-meter-fill{height:100%;border-radius:3px;transition:width 1s cubic-bezier(.4,0,.2,1);}
+.res-meter-val{font-size:11px;font-weight:800;color:var(--gold2);width:24px;text-align:right;flex-shrink:0;}
+
 /* ══════════════════════════════════════
    LINEUP SCREEN
 ══════════════════════════════════════ */
@@ -797,15 +819,87 @@ const CHARS={
 const CHAR_COLORS={AA:'#2563A8',AB:'#7C3E8A',BA:'#C0392B',BB:'#1B7A4A'};
 
 const PDB={
-  'balance-hd':{n:'피닉스 밸런스 프로',l:'정밀 컨트롤 시리즈',e:'🎯',q:'무게 중심이 완벽하게 잡혀 방향이 흔들리지 않아요.',tags:['정밀형','465g','방향성 최적화'],rv:[{s:5,t:'쇼트게임 정확도가 확실히 올라요'},{s:5,t:'처음 써보는데 실수가 줄었어요'}]},
-  'precision-ctrl':{n:'피닉스 프리시전 컨트롤',l:'방향성 보정 라인',e:'🎯',q:'방향성 보정 설계로 빗나간 샷도 덜 벗어나요.',tags:['정밀형','467g','방향 보정'],rv:[{s:5,t:'스코어가 눈에 띄게 좋아졌어요'},{s:4,t:'쇼트게임이 확실히 안정됐어요'}]},
-  'wood-premium':{n:'피닉스 우드 프리미엄',l:'클래식 우드 시리즈',e:'🌳',q:'묵직하고 진한 손맛. 탁 하는 느낌이 최고예요.',tags:['손맛 최고','490g','우드 헤드'],rv:[{s:5,t:'이 손맛 때문에 파크골프 못 끊겠어요'},{s:4,t:'클래식한 느낌이 정말 좋아요'}]},
-  'classic-feel':{n:'피닉스 클래식 필',l:'타구감 특화 라인',e:'🎨',q:'타구감 하나만큼은 최고예요. 칠수록 재밌어요.',tags:['손맛 특화','475g','타구감'],rv:[{s:5,t:'이 손맛이 파크골프 계속하게 만들어요'},{s:4,t:'묵직하고 진한 느낌이 최고예요'}]},
-  'carbon-pro':{n:'피닉스 고반발 카본 PRO',l:'고반발 카본 시리즈',e:'💥',q:'카본 탄성 극대화. 풀스윙할 때 공이 정말 멀리 날아갑니다.',tags:['비거리형','460g','고반발'],rv:[{s:5,t:'비거리 15m 늘었어요!'},{s:4,t:'가볍고 탄성 살아있어요'}]},
-  'distance-plus':{n:'피닉스 디스턴스 플러스',l:'비거리 특화 라인',e:'🚀',q:'비거리에 올인한 채. 멀리 날려보내는 쾌감이 최고예요.',tags:['비거리 특화','470g','파워 타입'],rv:[{s:5,t:'동반자들이 제 채를 탐내요'},{s:4,t:'힘차게 칠수록 더 멀리 나가요'}]},
-  'light-power':{n:'피닉스 라이트 파워',l:'경량 파워 시리즈',e:'⚡',q:'놀랍도록 가벼운데 파워가 살아있어요.',tags:['경량형','440g','피로감 제로'],rv:[{s:5,t:'18홀 돌아도 팔이 안 아파요!'},{s:4,t:'생각보다 탄성이 좋아요'}]},
-  'design-ed':{n:'피닉스 디자인 에디션',l:'스페셜 컬러 라인',e:'✨',q:'성능도 좋고 디자인도 예쁜 채. 필드에서 눈에 띄어요.',tags:['감성형','460g','한정판 컬러'],rv:[{s:5,t:'필드에서 제 채 예쁘다고 칭찬받았어요!'},{s:4,t:'성능도 기대 이상이에요'}]},
-  'carbon-ctrl':{n:'피닉스 카본 컨트롤',l:'카본 컨트롤 라인',e:'⚙️',q:'가볍고 탄성 있는 카본인데 컨트롤도 잡혔어요.',tags:['현대형','455g','카본+컨트롤'],rv:[{s:5,t:'가볍고 반응이 섬세해서 딱 제 스타일'},{s:4,t:'카본인데 컨트롤이 된다는 게 신기해요'}]},
+  'balance-hd':{
+    img:'https://phoenixparkgolf.com/web/product/big/202504/7e1e854e2e94f263660a1beb5c0cd54e.jpg',
+    n:'피닉스 K-06',l:'K 시리즈 · 중상급자용',e:'🥇',
+    weight:'465g',head:'반발 최적화 카본',shaft:'밸런스형',price:'900,000원',
+    q:'무게 중심이 완벽하게 잡혀 방향이 흔들리지 않아요. 홀컵 적중률이 확연히 올라갑니다.',
+    tags:['정밀형','465g','방향성 최적화'],
+    meters:{비거리:88,정밀도:85,타구감:82,내구성:90},
+    url:'https://phoenixparkgolf.com/product/detail.html?product_no=454&cate_no=88&display_group=2',
+    rv:[{s:5,t:'쇼트게임 정확도가 확실히 올라요'},{s:5,t:'처음 써보는데 실수가 줄었어요'}]},
+  'precision-ctrl':{
+    img:'https://phoenixparkgolf.com/web/product/big/202508/e9d73483beb5b7a4ec492adacc970f91.jpg',
+    n:'피닉스 K-07',l:'K 시리즈 · 상급자용',e:'👑',
+    weight:'468g',head:'고밀도 카본',shaft:'저중심 설계',price:'1,300,000원',
+    q:'고밀도 카본 헤드와 저중심 설계로 에너지 손실을 최소화. 비거리와 컨트롤을 동시에 원하는 상급자의 선택.',
+    tags:['상급자용','468g','저중심 설계'],
+    meters:{비거리:92,정밀도:85,타구감:88,내구성:95},
+    url:'https://phoenixparkgolf.com/product/detail.html?product_no=476&cate_no=88&display_group=2',
+    rv:[{s:5,t:'스코어가 눈에 띄게 좋아졌어요'},{s:4,t:'비거리와 컨트롤 둘 다 잡혔어요'}]},
+  'wood-premium':{
+    img:'https://phoenixparkgolf.com/web/product/medium/202602/f0b2e06eaae59ac9e8525fb5d940481a.png',
+    n:'피닉스 불사조',l:'럭셔리 프리미엄 · 상급자용',e:'🔥',
+    weight:'472g',head:'불사조 문양 우드',shaft:'특수 코팅',price:'3,000,000원',
+    q:'묵직하고 진한 손맛. 불사조 문양이 새겨진 우드 헤드는 압도적인 존재감과 타구감을 동시에 선사합니다.',
+    tags:['럭셔리','472g','우드 헤드'],
+    meters:{비거리:82,정밀도:88,타구감:99,내구성:95},
+    url:'https://phoenixparkgolf.com/product/detail.html?product_no=373&cate_no=88&display_group=2',
+    rv:[{s:5,t:'이 손맛 때문에 파크골프 못 끊겠어요'},{s:4,t:'클래식한 느낌이 정말 좋아요'}]},
+  'classic-feel':{
+    img:'https://phoenixparkgolf.com/web/product/big/202508/2053c42d7c2cb6214e44f0f33f3837dd.jpg',
+    n:'피닉스 독도 DOKDO',l:'스페셜 에디션 · 상급자용',e:'🇰🇷',
+    weight:'467g',head:'독도 문양 카본',shaft:'프리미엄 도색',price:'1,300,000원',
+    q:'국산 브랜드 자부심과 고급 카본 성능이 만났습니다. 독도 문양 한정 에디션으로 수집 가치도 높습니다.',
+    tags:['한정 에디션','467g','카본 헤드'],
+    meters:{비거리:90,정밀도:87,타구감:88,내구성:93},
+    url:'https://phoenixparkgolf.com/product/detail.html?product_no=478&cate_no=88&display_group=2',
+    rv:[{s:5,t:'선물로 드렸더니 너무 좋아하셨어요'},{s:5,t:'디자인이 정말 고급스러워요'}]},
+  'carbon-pro':{
+    img:'https://phoenixparkgolf.com/web/product/big/202508/e9d73483beb5b7a4ec492adacc970f91.jpg',
+    n:'피닉스 K-07',l:'K 시리즈 · 상급자용',e:'👑',
+    weight:'468g',head:'고밀도 카본',shaft:'저중심 설계',price:'1,300,000원',
+    q:'카본 고밀도 설계로 비거리를 극대화. 강한 풀스윙에도 방향성이 흔들리지 않는 상급자 파워형 모델.',
+    tags:['비거리형','468g','고밀도 카본'],
+    meters:{비거리:92,정밀도:82,타구감:88,내구성:95},
+    url:'https://phoenixparkgolf.com/product/detail.html?product_no=476&cate_no=88&display_group=2',
+    rv:[{s:5,t:'비거리 15m 늘었어요! 진짜 대박'},{s:4,t:'가볍고 탄성 살아있어요'}]},
+  'distance-plus':{
+    img:'https://phoenixparkgolf.com/web/product/big/202508/2053c42d7c2cb6214e44f0f33f3837dd.jpg',
+    n:'피닉스 독도 DOKDO',l:'스페셜 에디션 · 상급자용',e:'🇰🇷',
+    weight:'467g',head:'독도 문양 카본',shaft:'프리미엄 도색',price:'1,300,000원',
+    q:'비거리와 정체성을 동시에! 고반발 카본 헤드로 멀리 날려보내는 쾌감과 애국 감성을 동시에 담았습니다.',
+    tags:['비거리 특화','467g','한정 에디션'],
+    meters:{비거리:90,정밀도:85,타구감:88,내구성:93},
+    url:'https://phoenixparkgolf.com/product/detail.html?product_no=478&cate_no=88&display_group=2',
+    rv:[{s:5,t:'동반자들이 제 채를 탐내요'},{s:4,t:'힘차게 칠수록 더 멀리 나가요'}]},
+  'light-power':{
+    img:'https://phoenixparkgolf.com/web/product/big/202504/7e1e854e2e94f263660a1beb5c0cd54e.jpg',
+    n:'피닉스 K-06',l:'K 시리즈 · 중상급자용',e:'🥇',
+    weight:'465g',head:'반발 최적화 카본',shaft:'밸런스형',price:'900,000원',
+    q:'반발 최적화 카본 헤드가 스윙 파워를 비거리로 효율적으로 전환. 경량이라 장시간 라운딩에도 피로감이 적어요.',
+    tags:['경량형','465g','반발 최적화'],
+    meters:{비거리:88,정밀도:80,타구감:82,내구성:90},
+    url:'https://phoenixparkgolf.com/product/detail.html?product_no=454&cate_no=88&display_group=2',
+    rv:[{s:5,t:'18홀 돌아도 팔이 안 아파요!'},{s:4,t:'생각보다 탄성이 좋아요'}]},
+  'design-ed':{
+    img:'https://phoenixparkgolf.com/web/product/big/202508/2053c42d7c2cb6214e44f0f33f3837dd.jpg',
+    n:'피닉스 독도 DOKDO',l:'스페셜 에디션 · 상급자용',e:'🇰🇷',
+    weight:'467g',head:'독도 문양 카본',shaft:'한정 컬러',price:'1,300,000원',
+    q:'성능도 좋고 디자인도 특별한 채. 독도 한정 에디션으로 필드에서 유독 눈에 띄는 나만의 채를 원한다면.',
+    tags:['한정 에디션','467g','감성 디자인'],
+    meters:{비거리:90,정밀도:87,타구감:88,내구성:93},
+    url:'https://phoenixparkgolf.com/product/detail.html?product_no=478&cate_no=88&display_group=2',
+    rv:[{s:5,t:'필드에서 제 채 예쁘다고 칭찬받았어요!'},{s:4,t:'성능도 기대 이상이에요'}]},
+  'carbon-ctrl':{
+    img:'https://phoenixparkgolf.com/web/product/big/202504/7e1e854e2e94f263660a1beb5c0cd54e.jpg',
+    n:'피닉스 K-06',l:'K 시리즈 · 중상급자용',e:'🥇',
+    weight:'465g',head:'반발 최적화 카본',shaft:'밸런스형',price:'900,000원',
+    q:'카본의 경쾌한 타감에 정밀 컨트롤을 더했습니다. 비거리를 유지하면서도 방향성이 흔들리지 않는 밸런스형.',
+    tags:['밸런스형','465g','카본+컨트롤'],
+    meters:{비거리:88,정밀도:86,타구감:82,내구성:90},
+    url:'https://phoenixparkgolf.com/product/detail.html?product_no=454&cate_no=88&display_group=2',
+    rv:[{s:5,t:'가볍고 반응이 섬세해서 딱 제 스타일'},{s:4,t:'컨트롤이 확실히 잡혔어요'}]},
 };
 
 /* ════════════════════════ SEED DATA (초기 통계용) ════════════════════════
@@ -886,7 +980,8 @@ const SERIES=[
     desc:'피닉스 기술력의 정수. 선수·상급자를 위한 최고 성능 라인입니다.',
     products:[
       {
-        id:'p9',name:'피닉스 P9',line:'P 시리즈',tier:'상급자·선수용',tierBg:'rgba(201,162,39,.15)',tierColor:'#C9A227',
+        id:'p9',
+        img:'https://phoenixparkgolf.com/web/product/big/202506/09d182d197ec95a231ee193b24ea3d54.jpg',name:'피닉스 P9',line:'P 시리즈',tier:'상급자·선수용',tierBg:'rgba(201,162,39,.15)',tierColor:'#C9A227',
         emoji:'🏆',weight:'470g',head:'카본+우드 복합',shaft:'고탄성 카탈파',price:'1,300,000원',
         copy:'선수급 정밀 설계와 카본·우드 복합 헤드의 완벽한 융합. 극한의 타구감과 방향 정확도를 동시에 요구하는 상급자를 위한 피닉스 최상위 모델입니다.',
         features:['선수·상급자 전용','카본+우드 복합 헤드','극한 정밀도','고탄성 샤프트'],
@@ -896,7 +991,8 @@ const SERIES=[
         cta:'https://phoenixparkgolf.com/product/detail.html?product_no=466&cate_no=88&display_group=2'
       },
       {
-        id:'k7',name:'피닉스 K-07',line:'K 시리즈',tier:'상급자용 프리미엄',tierBg:'rgba(201,162,39,.15)',tierColor:'#C9A227',
+        id:'k7',
+        img:'https://phoenixparkgolf.com/web/product/big/202508/e9d73483beb5b7a4ec492adacc970f91.jpg',name:'피닉스 K-07',line:'K 시리즈',tier:'상급자용 프리미엄',tierBg:'rgba(201,162,39,.15)',tierColor:'#C9A227',
         emoji:'👑',weight:'468g',head:'고밀도 카본',shaft:'저중심 설계',price:'1,300,000원',
         copy:'고밀도 카본 헤드와 저중심 설계로 임팩트 에너지 손실을 최소화했습니다. 비거리와 컨트롤을 모두 잡아야 하는 상급자에게 가장 인기 있는 모델입니다.',
         features:['상급자용 대표 모델','고밀도 카본 헤드','저중심 설계','에너지 손실 최소화'],
@@ -906,7 +1002,8 @@ const SERIES=[
         cta:'https://phoenixparkgolf.com/product/detail.html?product_no=476&cate_no=88&display_group=2'
       },
       {
-        id:'k6',name:'피닉스 K-06',line:'K 시리즈',tier:'중상급자용',tierBg:'rgba(91,155,213,.15)',tierColor:'#5B9BD5',
+        id:'k6',
+        img:'https://phoenixparkgolf.com/web/product/big/202504/7e1e854e2e94f263660a1beb5c0cd54e.jpg',name:'피닉스 K-06',line:'K 시리즈',tier:'중상급자용',tierBg:'rgba(91,155,213,.15)',tierColor:'#5B9BD5',
         emoji:'🥇',weight:'465g',head:'반발 최적화 카본',shaft:'밸런스형',price:'900,000원',
         copy:'상급자로 도약하려는 중상급자를 위해 최적화된 모델. 반발 최적화 카본 헤드가 스윙 파워를 비거리로 효율적으로 전환시켜 줍니다.',
         features:['중상급자 최적화','반발 최적화 헤드','밸런스 샤프트','비거리 향상'],
@@ -922,7 +1019,8 @@ const SERIES=[
     desc:'특별한 이름과 특별한 성능. 피닉스가 자신있게 내놓은 시그니처 라인입니다.',
     products:[
       {
-        id:'dokdo',name:'피닉스 독도 DOKDO',line:'스페셜 에디션',tier:'상급자용 한정',tierBg:'rgba(192,57,43,.15)',tierColor:'#C0392B',
+        id:'dokdo',
+        img:'https://phoenixparkgolf.com/web/product/big/202508/2053c42d7c2cb6214e44f0f33f3837dd.jpg',name:'피닉스 독도 DOKDO',line:'스페셜 에디션',tier:'상급자용 한정',tierBg:'rgba(192,57,43,.15)',tierColor:'#C0392B',
         emoji:'🇰🇷',weight:'467g',head:'독도 문양 카본',shaft:'프리미엄 도색',price:'1,300,000원',
         copy:'대한민국 독도를 모티브로 한 애국 한정 에디션. 고급 카본 헤드에 독도 문양 도색을 더해 수집 가치와 성능을 모두 갖췄습니다. 선물용으로도 인기가 높습니다.',
         features:['국산 브랜드 자부심','한정 에디션','수집 가치','프리미엄 도색'],
@@ -932,7 +1030,8 @@ const SERIES=[
         cta:'https://phoenixparkgolf.com/product/detail.html?product_no=478&cate_no=88&display_group=2'
       },
       {
-        id:'buljajo',name:'피닉스 불사조',line:'럭셔리 프리미엄',tier:'상급자용 럭셔리',tierBg:'rgba(192,57,43,.15)',tierColor:'#C0392B',
+        id:'buljajo',
+        img:'https://phoenixparkgolf.com/web/product/medium/202602/f0b2e06eaae59ac9e8525fb5d940481a.png',name:'피닉스 불사조',line:'럭셔리 프리미엄',tier:'상급자용 럭셔리',tierBg:'rgba(192,57,43,.15)',tierColor:'#C0392B',
         emoji:'🔥',weight:'472g',head:'불사조 문양 우드',shaft:'특수 코팅',price:'1,300,000원',
         copy:'피닉스(불사조)의 이름을 그대로 담은 플래그십 모델. 불사조 문양이 새겨진 우드 헤드는 묵직한 타구감과 압도적인 존재감을 동시에 선사합니다.',
         features:['플래그십 모델','불사조 문양 우드','묵직한 타구감','럭셔리 마감'],
@@ -948,7 +1047,8 @@ const SERIES=[
     desc:'경량 카본 소재의 탄성을 극대화. 비거리와 파워를 원하는 골퍼를 위한 라인입니다.',
     products:[
       {
-        id:'carbon-pro',name:'피닉스 카본 PRO',line:'고반발 카본 시리즈',tier:'숙련자 비거리형',tierBg:'rgba(91,155,213,.15)',tierColor:'#5B9BD5',
+        id:'carbon-pro',
+        img:'https://phoenixparkgolf.com/web/product/big/202508/e9d73483beb5b7a4ec492adacc970f91.jpg',name:'피닉스 카본 PRO',line:'고반발 카본 시리즈',tier:'숙련자 비거리형',tierBg:'rgba(91,155,213,.15)',tierColor:'#5B9BD5',
         emoji:'💥',weight:'460g',head:'항공 카본 소재',shaft:'고반발 경량',price:'문의',
         copy:'항공 카본 소재의 고반발 설계로 풀스윙 에너지를 공에 100% 전달합니다. 비거리에서 동반자를 압도하고 싶은 파워 플레이어의 첫 번째 선택입니다.',
         features:['항공 카본 소재','고반발 설계','비거리 극대화','경량 460g'],
@@ -958,7 +1058,8 @@ const SERIES=[
         cta:'https://phoenixparkgolf.com/product/list.html?cate_no=97'
       },
       {
-        id:'carbon-ctrl',name:'피닉스 카본 컨트롤',line:'카본 컨트롤 라인',tier:'숙련자 밸런스형',tierBg:'rgba(91,155,213,.15)',tierColor:'#5B9BD5',
+        id:'carbon-ctrl',
+        img:'https://phoenixparkgolf.com/web/product/big/202504/7e1e854e2e94f263660a1beb5c0cd54e.jpg',name:'피닉스 카본 컨트롤',line:'카본 컨트롤 라인',tier:'숙련자 밸런스형',tierBg:'rgba(91,155,213,.15)',tierColor:'#5B9BD5',
         emoji:'⚙️',weight:'455g',head:'컨트롤 카본',shaft:'저진동 설계',price:'문의',
         copy:'카본의 경쾌한 타감에 정밀 컨트롤을 더했습니다. 비거리를 유지하면서도 방향성이 흔들리지 않는 밸런스형 모델로, 감각파 플레이어에게 최적입니다.',
         features:['카본+컨트롤 밸런스','경량 455g','저진동 설계','방향성 보정'],
@@ -968,7 +1069,8 @@ const SERIES=[
         cta:'https://phoenixparkgolf.com/product/list.html?cate_no=97'
       },
       {
-        id:'light-power',name:'피닉스 라이트 파워',line:'경량 파워 시리즈',tier:'숙련자·입문자 겸용',tierBg:'rgba(91,155,213,.12)',tierColor:'#5B9BD5',
+        id:'light-power',
+        img:'https://phoenixparkgolf.com/web/product/big/202504/7e1e854e2e94f263660a1beb5c0cd54e.jpg',name:'피닉스 라이트 파워',line:'경량 파워 시리즈',tier:'숙련자·입문자 겸용',tierBg:'rgba(91,155,213,.12)',tierColor:'#5B9BD5',
         emoji:'⚡',weight:'440g',head:'초경량 카본',shaft:'플렉스형',price:'문의',
         copy:'440g의 초경량 설계로 18홀 전 과정에서도 손목 피로가 없습니다. 가볍지만 파워가 살아있어 장시간 라운딩을 즐기는 분께 특히 추천합니다.',
         features:['초경량 440g','손목 피로 제로','18홀 지속 파워','플렉스 샤프트'],
@@ -984,7 +1086,8 @@ const SERIES=[
     desc:'전통 우드 소재의 깊고 묵직한 타구감. 손맛을 중시하는 골퍼를 위한 클래식 라인입니다.',
     products:[
       {
-        id:'wood-premium',name:'피닉스 우드 프리미엄',line:'클래식 우드 시리즈',tier:'숙련자 손맛형',tierBg:'rgba(139,105,20,.15)',tierColor:'#C9A227',
+        id:'wood-premium',
+        img:'https://phoenixparkgolf.com/web/product/medium/202602/f0b2e06eaae59ac9e8525fb5d940481a.png',name:'피닉스 우드 프리미엄',line:'클래식 우드 시리즈',tier:'숙련자 손맛형',tierBg:'rgba(139,105,20,.15)',tierColor:'#C9A227',
         emoji:'🌳',weight:'490g',head:'천연 감나무',shaft:'클래식 우드',price:'문의',
         copy:'천연 감나무 헤드가 주는 묵직하고 진한 손맛은 카본이 절대 흉내낼 수 없습니다. 공이 헤드에 닿는 순간 탁 하는 그 느낌, 한번 경험하면 바꾸기 어렵습니다.',
         features:['천연 감나무 헤드','묵직한 타구감','클래식 디자인','내구성 최강'],
@@ -994,7 +1097,8 @@ const SERIES=[
         cta:'https://phoenixparkgolf.com/product/list.html?cate_no=97'
       },
       {
-        id:'classic-feel',name:'피닉스 클래식 필',line:'타구감 특화 라인',tier:'숙련자 감각형',tierBg:'rgba(139,105,20,.15)',tierColor:'#C9A227',
+        id:'classic-feel',
+        img:'https://phoenixparkgolf.com/web/product/big/202508/2053c42d7c2cb6214e44f0f33f3837dd.jpg',name:'피닉스 클래식 필',line:'타구감 특화 라인',tier:'숙련자 감각형',tierBg:'rgba(139,105,20,.15)',tierColor:'#C9A227',
         emoji:'🎨',weight:'475g',head:'합성 우드 복합',shaft:'감각형 설계',price:'문의',
         copy:'우드 계열의 타구감에 현대적인 가공 기술을 결합했습니다. 묵직함은 살리면서 무게는 우드 프리미엄보다 가볍게 조정해 더 많은 분이 즐길 수 있습니다.',
         features:['합성 우드 복합','묵직한 타감','475g 적정 무게','감각형 샤프트'],
@@ -1010,7 +1114,8 @@ const SERIES=[
     desc:'부담 없이 시작하는 파크골프의 첫 걸음. 기본기를 탄탄하게 잡아주는 입문 라인입니다.',
     products:[
       {
-        id:'intro-light',name:'피닉스 입문 라이트',line:'입문자 경량 라인',tier:'입문자 경량 추천',tierBg:'rgba(93,187,122,.12)',tierColor:'#5DBB7A',
+        id:'intro-light',
+        img:'https://phoenixparkgolf.com/web/product/big/202504/7e1e854e2e94f263660a1beb5c0cd54e.jpg',name:'피닉스 입문 라이트',line:'입문자 경량 라인',tier:'입문자 경량 추천',tierBg:'rgba(93,187,122,.12)',tierColor:'#5DBB7A',
         emoji:'🌱',weight:'445g',head:'입문용 복합 소재',shaft:'소프트 플렉스',price:'문의',
         copy:'445g의 가벼운 무게로 처음 시작하는 분도 편안하게 스윙할 수 있습니다. 손목·어깨에 무리가 없어 꾸준한 운동 습관을 만들기에 최적의 채입니다.',
         features:['초경량 445g','손목 부담 최소','소프트 플렉스','입문자 최적'],
@@ -1020,7 +1125,8 @@ const SERIES=[
         cta:'https://phoenixparkgolf.com/product/list.html?cate_no=88'
       },
       {
-        id:'brand-trust',name:'피닉스 시그니처 클래식',line:'입문자 표준 라인',tier:'입문자 브랜드 추천',tierBg:'rgba(93,187,122,.12)',tierColor:'#5DBB7A',
+        id:'brand-trust',
+        img:'https://phoenixparkgolf.com/web/product/big/202502/62fd652bc0a53ed7adc5adc69e161a89.jpg',name:'피닉스 시그니처 클래식',line:'입문자 표준 라인',tier:'입문자 브랜드 추천',tierBg:'rgba(93,187,122,.12)',tierColor:'#5DBB7A',
         emoji:'🏅',weight:'468g',head:'검증 복합 소재',shaft:'표준 밸런스',price:'문의',
         copy:'피닉스 브랜드의 기술력이 집약된 대표 입문 모델. 처음이지만 좋은 채를 쓰고 싶다는 분들께 가장 많이 추천하는 신뢰도 높은 채입니다.',
         features:['브랜드 대표 입문채','검증된 기술력','표준 밸런스','베스트셀러'],
@@ -1030,7 +1136,8 @@ const SERIES=[
         cta:'https://phoenixparkgolf.com/product/list.html?cate_no=97'
       },
       {
-        id:'design-ed',name:'피닉스 디자인 에디션',line:'스페셜 컬러 라인',tier:'입문자·일반 디자인형',tierBg:'rgba(176,126,204,.12)',tierColor:'#B07ECC',
+        id:'design-ed',
+        img:'https://phoenixparkgolf.com/web/product/big/202508/2053c42d7c2cb6214e44f0f33f3837dd.jpg',name:'피닉스 디자인 에디션',line:'스페셜 컬러 라인',tier:'입문자·일반 디자인형',tierBg:'rgba(176,126,204,.12)',tierColor:'#B07ECC',
         emoji:'✨',weight:'460g',head:'컬러 복합 소재',shaft:'한정 컬러',price:'문의',
         copy:'성능에 감성을 더했습니다. 한정 컬러 에디션으로 필드에서 유독 눈에 띄는 채를 원하는 분들을 위한 스페셜 라인. 보기 좋은 게 치기도 좋습니다.',
         features:['한정 컬러 에디션','감성 디자인','460g 표준','입문·일반 겸용'],
@@ -1106,6 +1213,10 @@ function buildCard(p, seriesColor){
 
   return `
   <div class="lu-card" style="--lc-clr:${seriesColor}">
+    ${p.img ? `<div style="width:100%;aspect-ratio:16/9;overflow:hidden;border-bottom:1px solid var(--ink4);">
+      <img src="${p.img}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;"
+           onerror="this.parentElement.style.display='none'">
+    </div>` : ''}
     <div class="lu-card-head">
       <div class="lu-card-ico">${p.emoji}</div>
       <div class="lu-card-titles">
@@ -1181,11 +1292,47 @@ function calcResult(){
   // products
   document.getElementById('prod-title').textContent=ch.name+'에게 딱 맞는 피닉스 라인업';
   const ranks=['1st PICK','2nd PICK','3rd PICK'];
+  const mGrads={비거리:'linear-gradient(90deg,#E8624A,#F5A27A)',정밀도:'linear-gradient(90deg,#5B9BD5,#8EC4F0)',타구감:'linear-gradient(90deg,#C9A227,#E8C45A)',내구성:'linear-gradient(90deg,#5DBB7A,#9BDD9B)'};
   document.getElementById('prod-list').innerHTML=ch.products.map((pid,i)=>{
     const p=PDB[pid];if(!p)return'';
     const on=wl.includes(pid);
-    return`<div class="prod-card"><div class="prod-img"><div class="pimg-bg" style="background:radial-gradient(ellipse at center,${ch.clr}22 0%,transparent 60%);"></div><span class="pem">${p.e}</span><span class="prank">${ranks[i]}</span><button class="pwish ${on?'on':''}" id="pw-${pid}" onclick="toggleWish('${pid}',event)">${on?'❤️':'🤍'}</button></div><div class="pbody"><div class="pline">${p.l}</div><div class="pname">${p.n}</div><div class="pquote">${p.q}</div><div class="ptags">${p.tags.map(t=>`<span class="ptag">${t}</span>`).join('')}</div><div class="prevs">${p.rv.slice(0,2).map(r=>`<div class="prev"><span class="pstar">${'★'.repeat(r.s)}${'☆'.repeat(5-r.s)}</span><span>"${r.t}"</span></div>`).join('')}</div><div class="pbtns"><button class="bconsult" onclick="openConsult('${pid}','${p.n}')">📞 상담 신청</button><button class="bbuy" onclick="trackBuy('${pid}')">구매하기</button></div></div></div>`;
+    const metersHtml=p.meters?Object.entries(p.meters).map(([k,v])=>`
+      <div class="res-meter">
+        <div class="res-meter-lbl">${k}</div>
+        <div class="res-meter-track"><div class="res-meter-fill" style="width:0%;background:${mGrads[k]||'var(--gold)'}" data-w="${v}%"></div></div>
+        <div class="res-meter-val">${v}</div>
+      </div>`).join(''):'';
+    return`<div class="prod-card">
+      <div class="prod-img">
+        ${!p.img ? `<div class="pimg-bg" style="background:radial-gradient(ellipse at center,${ch.clr}22 0%,transparent 60%);"></div>` : ''}
+        ${p.img
+          ? `<img src="${p.img}" alt="${p.n}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">`
+          : ''}
+        <span class="pem" style="${p.img?'display:none':''}display:flex;align-items:center;justify-content:center;width:100%;height:100%;">${p.e}</span>
+        <span class="prank">${ranks[i]}</span>
+        <button class="pwish ${on?'on':''}" id="pw-${pid}" onclick="toggleWish('${pid}',event)">${on?'❤️':'🤍'}</button>
+      </div>
+      <div class="pbody">
+        <div class="pline">${p.l}</div>
+        <div class="pname">${p.n}</div>
+        <div class="res-specs">
+          <div class="res-spec"><span class="res-spec-val">${p.weight||'—'}</span><span class="res-spec-key">무게</span></div>
+          <div class="res-spec"><span class="res-spec-val">${p.head?p.head.slice(0,6)+(p.head.length>6?'…':''):'—'}</span><span class="res-spec-key">헤드 소재</span></div>
+          <div class="res-spec"><span class="res-spec-val" style="color:var(--gold2);font-size:13px;">${p.price||'문의'}</span><span class="res-spec-key">가격</span></div>
+        </div>
+        <div class="pquote">${p.q}</div>
+        <div class="ptags">${p.tags.map(t=>`<span class="ptag">${t}</span>`).join('')}</div>
+        ${p.meters?`<div class="res-meters">${metersHtml}</div>`:''}
+        <div class="prevs">${p.rv.slice(0,2).map(r=>`<div class="prev"><span class="pstar">${'★'.repeat(r.s)}${'☆'.repeat(5-r.s)}</span><span>"${r.t}"</span></div>`).join('')}</div>
+        <div class="pbtns">
+          <button class="bconsult" onclick="openConsult('${pid}','${p.n}')">📞 상담 신청</button>
+          <button class="bbuy" onclick="window.open('${p.url}','_blank')">🛒 구매하기 →</button>
+        </div>
+      </div>
+    </div>`;
   }).join('');
+  // animate result meters
+  setTimeout(()=>document.querySelectorAll('.res-meter-fill').forEach(el=>{el.style.width=el.dataset.w;}),300);
 
   // ── STATS 업데이트 ──
   const st=getStats();
