@@ -304,6 +304,35 @@ body{font-family:'Noto Sans KR',sans-serif;color:var(--white);display:flex;justi
 ::-webkit-scrollbar-thumb{background:var(--ink4);border-radius:3px;}
 
 /* ── RESULT PRODUCT: spec grid & meters ── */
+/* 제품명 행 — 썸네일 + 제목 가로 배치 */
+.phead-row{
+  display:flex;align-items:center;gap:14px;
+  padding:16px 17px 14px;
+  border-bottom:1px solid var(--ink4);
+}
+.phead-thumb{
+  width:120px;height:120px;
+  border-radius:12px;
+  background:var(--ink4);
+  flex-shrink:0;
+  overflow:hidden;
+}
+.phead-info{flex:1;min-width:0;}
+.phead-info .pline{margin-bottom:2px;}
+.phead-info .pname{font-size:16px;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.prank-inline{
+  display:inline-block;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:12px;font-weight:800;
+  padding:2px 9px;border-radius:100px;
+  background:var(--gold);color:var(--ink);
+  letter-spacing:.5px;
+}
+/* lu-card-ico 크기 조정 — 썸네일 들어갈 때 */
+.lu-card-ico{
+  width:120px;height:120px;
+  border-radius:14px;
+}
 .res-specs{
   display:grid;grid-template-columns:repeat(3,1fr);
   gap:1px;background:var(--ink4);
@@ -433,10 +462,10 @@ body{font-family:'Noto Sans KR',sans-serif;color:var(--white);display:flex;justi
   border-bottom:1px solid var(--ink4);
 }
 .lu-card-ico{
-  width:52px;height:52px;
+  width:120px;height:120px;
   border-radius:12px;
   display:flex;align-items:center;justify-content:center;
-  font-size:26px;flex-shrink:0;
+  font-size:48px;flex-shrink:0;
   background:var(--ink4);
 }
 .lu-card-titles{flex:1;}
@@ -1213,12 +1242,13 @@ function buildCard(p, seriesColor){
 
   return `
   <div class="lu-card" style="--lc-clr:${seriesColor}">
-    ${p.img ? `<div style="width:100%;aspect-ratio:16/9;overflow:hidden;border-bottom:1px solid var(--ink4);">
-      <img src="${p.img}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;"
-           onerror="this.parentElement.style.display='none'">
-    </div>` : ''}
     <div class="lu-card-head">
-      <div class="lu-card-ico">${p.emoji}</div>
+      <div class="lu-card-ico" style="${p.img?'padding:0;overflow:hidden;':''}">
+        ${p.img
+          ? `<img src="${p.img}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;"
+               onerror="this.parentElement.innerHTML='${p.emoji}';this.parentElement.style.padding='';">`
+          : p.emoji}
+      </div>
       <div class="lu-card-titles">
         <div class="lu-card-line">${p.line}</div>
         <div class="lu-card-name">${p.name}</div>
@@ -1303,18 +1333,21 @@ function calcResult(){
         <div class="res-meter-val">${v}</div>
       </div>`).join(''):'';
     return`<div class="prod-card">
-      <div class="prod-img">
-        ${!p.img ? `<div class="pimg-bg" style="background:radial-gradient(ellipse at center,${ch.clr}22 0%,transparent 60%);"></div>` : ''}
-        ${p.img
-          ? `<img src="${p.img}" alt="${p.n}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">`
-          : ''}
-        <span class="pem" style="${p.img?'display:none':''}display:flex;align-items:center;justify-content:center;width:100%;height:100%;">${p.e}</span>
-        <span class="prank">${ranks[i]}</span>
+      <div class="phead-row">
+        <div class="phead-thumb" style="${p.img?'padding:0;overflow:hidden;':'font-size:28px;display:flex;align-items:center;justify-content:center;'}">
+          ${p.img
+            ? `<img src="${p.img}" alt="${p.n}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;"
+                 onerror="this.parentElement.innerHTML='${p.e}';this.parentElement.style.cssText='font-size:48px;display:flex;align-items:center;justify-content:center;width:120px;height:120px;border-radius:10px;background:var(--ink4);flex-shrink:0;';">`
+            : p.e}
+        </div>
+        <div class="phead-info">
+          <div class="pline">${p.l}</div>
+          <div class="pname">${p.n}</div>
+          <span class="prank-inline">${ranks[i]}</span>
+        </div>
         <button class="pwish ${on?'on':''}" id="pw-${pid}" onclick="toggleWish('${pid}',event)">${on?'❤️':'🤍'}</button>
       </div>
       <div class="pbody">
-        <div class="pline">${p.l}</div>
-        <div class="pname">${p.n}</div>
         <div class="res-specs">
           <div class="res-spec"><span class="res-spec-val">${p.weight||'—'}</span><span class="res-spec-key">무게</span></div>
           <div class="res-spec"><span class="res-spec-val">${p.head?p.head.slice(0,6)+(p.head.length>6?'…':''):'—'}</span><span class="res-spec-key">헤드 소재</span></div>
@@ -1523,13 +1556,51 @@ function openConsult(pid,name){
   ['cn','cp','cm'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('modal-c').classList.add('open');
 }
-function submitConsult(){
-  const name=document.getElementById('cn').value.trim(), phone=document.getElementById('cp').value.trim();
+async function submitConsult(){
+  const name=document.getElementById('cn').value.trim();
+  const phone=document.getElementById('cp').value.trim();
+  const msg=document.getElementById('cm').value.trim();
   if(!name||!phone){alert('이름과 연락처를 입력해주세요.');return;}
-  const cs=JSON.parse(localStorage.getItem('pp_consults')||'[]');
-  cs.push({name,phone,product:cpid,date:new Date().toISOString()});
-  localStorage.setItem('pp_consults',JSON.stringify(cs));
-  document.getElementById('okmsg').classList.add('show');
+
+  // 버튼 로딩 상태
+  const btn=document.querySelector('#modal-c .bfw.g');
+  const origTxt=btn.textContent;
+  btn.textContent='전송 중...';
+  btn.disabled=true;
+
+  try{
+    // Formspree — kiwi4080@gmail.com 으로 전송
+    const res=await fetch('https://formspree.io/f/xvgakwkq',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({
+        이름:name,
+        연락처:phone,
+        관심상품:document.getElementById('mprod').textContent,
+        문의내용:msg||'(없음)',
+        _subject:`[파크 파트너] 상담 신청 — ${name}`,
+      })
+    });
+    if(res.ok){
+      // localStorage 백업 저장
+      const cs=JSON.parse(localStorage.getItem('pp_consults')||'[]');
+      cs.push({name,phone,product:cpid,msg,date:new Date().toISOString()});
+      localStorage.setItem('pp_consults',JSON.stringify(cs));
+      document.getElementById('okmsg').classList.add('show');
+      btn.textContent='✅ 전송 완료';
+    } else {
+      throw new Error('전송 실패');
+    }
+  } catch(e){
+    // Formspree 실패 시 mailto 폴백
+    const subject=encodeURIComponent(`[파크 파트너] 상담 신청 — ${name}`);
+    const body=encodeURIComponent(`이름: ${name}\n연락처: ${phone}\n관심 상품: ${document.getElementById('mprod').textContent}\n문의 내용: ${msg||'없음'}`);
+    window.open(`mailto:kiwi4080@gmail.com?subject=${subject}&body=${body}`,'_blank');
+    document.getElementById('okmsg').textContent='📧 메일 앱이 열립니다. 전송해주세요!';
+    document.getElementById('okmsg').classList.add('show');
+    btn.textContent=origTxt;
+    btn.disabled=false;
+  }
 }
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 function closeOut(e){if(e.target===e.currentTarget)closeModal(e.currentTarget.id);}
